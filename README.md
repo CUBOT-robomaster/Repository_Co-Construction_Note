@@ -1,4 +1,7 @@
 # Repository_Co-Construction_Note
+## 省流
+- 推送到dev分支
+- 推送时说清楚更改内容
 ## 代码仓库使用规范：
 - 分支问题
   - main 为主分支，为确保主分支稳定性， main 分支一般由 develop 分支合并，任何时间都不能直接修改代码。
