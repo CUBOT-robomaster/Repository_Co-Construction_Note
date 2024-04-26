@@ -1,8 +1,12 @@
 # Repository_Co-Construction_Note
+
 ## 省流
+
 - 推送到dev分支
 - 推送时说清楚更改内容
+
 ## 代码仓库使用规范：
+
 - 分支问题
   - main 为主分支，为确保主分支稳定性， main 分支一般由 develop 分支合并，任何时间都不能直接修改代码。
   - develop 为开发分支，始终保持最新完成以及bug修复后的代码，一般开发的新功能时，feature分支都是基于develop分支下创建的。平时我们提交代码都在 dev 分支。
@@ -42,5 +46,7 @@
   ```
     docs(Xmind): Fixed a bug with the chassis branch
   ```
+
 ## 代码编写规范
+
 - 见飞书-->软件组知识库
