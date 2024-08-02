@@ -5,7 +5,7 @@
 - 推送到dev分支
 - 推送时说清楚更改内容
 
-## 代码仓库使用规范：
+## 代码仓库使用规范
 
 - 分支问题
   - main 为主分支，为确保主分支稳定性， main 分支一般由 develop 分支合并，任何时间都不能直接修改代码。
@@ -14,6 +14,7 @@
 - 提交规范问题
   - 为了便于追溯，我们提交规范格式为```type(scope): body```参考以下提交规范：
   - type：用于指定commit的类型，约定了feat、fix两个主要type，以及docs、style、build、refactor、revert五个特殊type。
+
   ```
     # 主要type
     feat:     增加新功能
@@ -34,15 +35,19 @@
     
     当一次改动包括主要type与特殊type时，统一采用主要type
   ```
-    - scope：用于描述改动的范围，格式为项目名/模块名，如果一次commit修改多个模块，建议拆分成多次commit，以便更好追踪和维护。
-    - body：填写详细描述，主要描述改动之前的情况及修改动机，对于小的修改不作要求，但是重大需求、更新等必须添加body来作说明。
+
+  - scope：用于描述改动的范围，格式为项目名/模块名，如果一次commit修改多个模块，建议拆分成多次commit，以便更好追踪和维护。
+  - body：填写详细描述，主要描述改动之前的情况及修改动机，对于小的修改不作要求，但是重大需求、更新等必须添加body来作说明。
 - 示例：
+
   ```
     feat(tasks/chassis): add supercapacitor control module
   ```
+
   ```
     docs(README): add explanation
   ```
+
   ```
     docs(Xmind): Fixed a bug with the chassis branch
   ```
@@ -50,6 +55,7 @@
 ## 代码编写规范
 
 ### 1. 命名法与字符规范
+
 驼峰式命名法
  释义：函数名中的每一个逻辑断点都有一个大写字母来标记。
 
@@ -61,13 +67,14 @@ typedef struct
         int16_t  SpeedRPM;                  //< 每分钟所转圈数
         int16_t  TorqueCurrent;             //< 反馈力矩
         uint8_t  Temperature;               //< 温度
-        
+
         int16_t  LastEcd;                   //< 上一时刻编码器返回值                        
         int16_t  Angle;                     //< 解算后的编码器角度
         int16_t  AngleSpeed;                //< 解算后的编码器角速度        
 
         int16_t  Target;                    //< 电机的期望参数
         int16_t  Output;                    //< 电机输出值，通常为电流和电压        
+
 }MotorData_t;
 
 - 函数参数表声明和全局变量的定义使用小驼峰法，即首字母小写。
@@ -77,11 +84,11 @@ CAN_TxBuffer txBuffer0x200forCAN1={
 };
 
 - 宏名全大写，逻辑断点以下划线_间隔。
-#define K_ECD_TO_ANGLE 0.043945f       //< 角度转换编码器刻度的系数：360/8192
-#define ECD_RANGE_FOR_3508 8191        //< 编码器刻度值为0-8191
-#define CURRENT_LIMIT_FOR_3508 16384   //< 控制电流范围为正负16384
-#define ECD_RANGE_FOR_6020 8191        //< 编码器刻度值为0-8191
-#define VOLTAGE_LIMIT_FOR_6020 30000   //< 控制电压范围为正负30000
+# define K_ECD_TO_ANGLE 0.043945f       //< 角度转换编码器刻度的系数：360/8192
+# define ECD_RANGE_FOR_3508 8191        //< 编码器刻度值为0-8191
+# define CURRENT_LIMIT_FOR_3508 16384   //< 控制电流范围为正负16384
+# define ECD_RANGE_FOR_6020 8191        //< 编码器刻度值为0-8191
+# define VOLTAGE_LIMIT_FOR_6020 30000   //< 控制电压范围为正负30000
 - 尽量避免名字中出现数字编号，应使用有意义的单词命名，除非逻辑上必须用数字（如CAN1、CAN2等）
 - 注意命名的自解释性，变量名通俗且由名词组成，函数名简单且由动宾短语组成。
 - 避免硬编码，将程序运行的参数摘出并给与合理的命名。（关于硬编码详见编码规范相关知识）
@@ -107,53 +114,56 @@ void MotorFillData(Motor* motor, int16_t output);
 2. 头文件格式
 
 头文件作用：
+
 - C语言里，每个源文件是一个模块，头文件为使用该模块的用户提供接口。接口指一个功能模块暴露给其他模块用以访问具体功能的方法。用户只需包含相应的头文件就可使用该头文件中暴露的接口。
 
 头文件组织原则：
+
 - 头文件中不应包含本地数据，以降低模块间耦合度 （迫于无奈）
 - 只有源文件自己使用的类型、宏定义和变量、函数声明，不应出现在头文件里。作用域限于单文件的私有变量和函数应声明为static，以防止外部调用。（将私有类型置于源文件中，会提高聚合度，并减少不必要的格式外漏）
 - 头文件内不允许定义变量和函数，只能有宏、类型(typedef/struct/union/enum等)及变量和函数的声明。
 
 头文件包含原则：
+
 - 特殊情况下可extern基本类型的全局变量，源文件通过包含该头文件访问全局变量。但头文件内不应extern自定义类型(如结构体)的全局变量，否则将迫使本不需要访问该变量的源文件包含自定义类型所在头文件。（迫于无奈）
 - 尽量在源文件中包含头文件，而非在头文件中。且源文件仅包含所需的头文件。（有些库基础库必须包含在头文件里）
 
 头文件格式示例：
-#ifndef  _MOTOR_H_      // header guard
-#define  _MOTOR_H_      // 必须确保header guard宏名永不重名
+# ifndef  *MOTOR_H*      // header guard
+# define  *MOTOR_H*      // 必须确保header guard宏名永不重名
 
 //.h文件头部
-#ifdef  __cplusplus     // C++与C语言混编头文件
+# ifdef  __cplusplus     // C++与C语言混编头文件
 extern "C" {
-#endif
+# endif
 
 //<宏定义声明>
-#define K_ECD_TO_ANGLE 0.043945f                    //< 角度转换编码器刻度的系数为360/8192
-#define ECD_RANGE_FOR_3508 8191                     //< 编码器刻度值为0-8191
- 
+# define K_ECD_TO_ANGLE 0.043945f                    //< 角度转换编码器刻度的系数为360/8192
+# define ECD_RANGE_FOR_3508 8191                     //< 编码器刻度值为0-8191
+
 //<类型(typedef/struct/union/enum等)声明>
-typedef struct                                                                                                                 
+typedef struct
 {
         uint8_t  CanNumber;                         //< 电机所使用的CAN端口号
-        uint16_t CanId;                             //< 电机ID        
-        uint8_t  MotorType;                         //< 电机类型        
+        uint16_t CanId;                             //< 电机ID
+        uint8_t  MotorType;                         //< 电机类型
         uint16_t EcdOffset;                         //< 电机初始零点
         uint16_t EcdFullRange;                      //< 编码器量程
         int16_t  CurrentLimit;                      //< 电调能承受的最大电流
 }MotorParam;
- 
+
 //<函数声明>
 void MotorFillData(Motor* motor, int16_t output);
-    
+
 //<引用变量声明>
 extern RC_Ctrl rc_Ctrl;
-    
-//.h文件尾部    
-#ifdef  __cplusplus
-}
-#endif
 
-#endif
+//.h文件尾部
+# ifdef  __cplusplus
+}
+# endif
+
+# endif
 
 3. 注释风格
 Doxygen注释风格
@@ -161,21 +171,19 @@ Doxygen注释风格
 咱们仅借用这个注释格式，不使用Doxygen这个软件工具。
 
 - 函数注释在源文件中简明扼要；
-/** 
-  * @brief 简要注释函数功能 Brief Description. 
+/**
+  - @brief 简要注释函数功能 Brief Description.
   */
 当你使用VSCode等代码编辑器时，可以使用一些插件来Generate Doxygen Comments，这会极大提高你写注释的效率。
 - 在头文件中全面详细。
 /**
-  * @brief          电机初始化
-  * @note            GM6020电机ID为001时，反馈报文为0x205,
-  *                         电机ID为111时（7），反馈报文ID为0x20B
-  * @param[in]  motor        电机数据结构体
-  * @param[in]  ecd_Offset   编码器初始值
-  * @retval     None
+  - @brief          电机初始化
+  - @note            GM6020电机ID为001时，反馈报文为0x205,
+  -                         电机ID为111时（7），反馈报文ID为0x20B
+  - @param[in]  motor        电机数据结构体
+  - @param[in]  ecd_Offset   编码器初始值
+  - @retval     None
   */
 
 //< 这是注释
 // 这是注释
-
-
