@@ -13,7 +13,8 @@
   - develop 为开发分支，始终保持最新完成以及bug修复后的代码，一般开发的新功能时，feature分支都是基于develop分支下创建的。平时我们提交代码都在 dev 分支。
   - feature 分支是开发新功能时，以develop为基础创建的特性分支。
 - __提交规范问题__
-  - 为了便于追溯，我们提交规范格式为```type(scope): body```参考以下提交规范：
+  - 参考了[git commit 规范](https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)和[约定式提交](https://www.conventionalcommits.org/zh-hans/v1.0.0/)，类似的还有[gitmoji](https://gitmoji.dev/)，挺有意思，可以看看。
+  - 我们没有统一部署这类自动化工具，所以目前的`commit message`还是手敲上去的，所以目前大家只需要写清楚便于追溯回滚就好了。为了便于追溯，我们提交规范格式为```type(scope): body```参考以下提交规范：
   - type：用于指定commit的类型，约定了feat、fix两个主要type，以及docs、style、build、refactor、revert五个特殊type。
 
   ```text
@@ -151,11 +152,11 @@ __头文件包含原则：__
 __头文件格式示例：__
 
 ```C
-#ifndef  _MOTOR_H_      // header guard
+#ifndef  _MOTOR_H_      // header guard，防止头文件被重复包含
 #define  _MOTOR_H_      // 必须确保header guard宏名永不重名
 
 //.h文件头部
-#ifdef  __cplusplus     // C++与C语言混编头文件
+#ifdef  __cplusplus     // C++与C语言混编头文件需包含此段代码
 extern "C" {
 #endif
 
@@ -198,7 +199,7 @@ __Doxygen注释风格：__
 
 ```C
 /**
-  - @brief 简要注释函数功能 Brief Description.
+  * @brief 简要注释函数功能 Brief Description.
   */
 ```
 
@@ -208,12 +209,12 @@ __Doxygen注释风格：__
 
 ```C
 /**
-  - @brief          电机初始化
-  - @note            GM6020电机ID为001时，反馈报文为0x205,
-  -                         电机ID为111时（7），反馈报文ID为0x20B
-  - @param[in]  motor        电机数据结构体
-  - @param[in]  ecd_Offset   编码器初始值
-  - @retval     None
+  * @brief  电机初始化
+  * @note   GM6020电机ID为001(1)时，反馈报文ID为0x205,
+  *               电机ID为111(7)时，反馈报文ID为0x20B
+  * @param[in]  motor        电机数据结构体
+  * @param[in]  ecd_Offset   编码器初始值
+  * @retval     None
   */
 
 //< 这是注释
