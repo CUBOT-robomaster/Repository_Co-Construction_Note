@@ -225,4 +225,4 @@ __Doxygen注释风格：__
 
 | 日期 | 姓名 | 任务 | 备注 |
 | :---: | :---: | :---: | :---: |
-| 2024.08.13 | 罗旭阳 | 为Framework_Based_on_FreeRTOS和Repository_Co-Construction_Note两个仓库添加Gitee镜像仓库 |  |
+| 2024.08.13 | 罗旭阳 | 为Framework_Based_on_FreeRTOS和Repository_Co-Construction_Note两个仓库添加Gitee镜像仓库 | 2024.12.06记：如果没记错的话，密钥已经过期了 |
